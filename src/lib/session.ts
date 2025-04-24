@@ -2,14 +2,15 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = process.env.SESSION_TOKEN;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function createSession(userId: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
+  const cookieStore = await cookies();
 
-  cookies().set("session", session, {
+  cookieStore.set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -17,7 +18,8 @@ export async function createSession(userId: string) {
 }
 
 export async function deleteSession() {
-  cookies().delete("session");
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
 }
 
 type SessionPayload = {
@@ -40,6 +42,6 @@ export async function decrypt(session: string | undefined = "") {
     });
     return payload;
   } catch (error) {
-    console.log("Failed to verify session");
+    console.error("Failed to verify session", error);
   }
 }
