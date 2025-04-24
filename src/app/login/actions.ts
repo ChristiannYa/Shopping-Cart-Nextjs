@@ -1,7 +1,9 @@
 "use server";
 
+import pool from "@/lib/db";
+import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { createSession, deleteSession } from "@/lib/session";
+import { createSession, deleteSession } from "@/app/lib/session";
 import { redirect } from "next/navigation";
 
 type LoginForm =
@@ -13,12 +15,6 @@ type LoginForm =
     }
   | undefined;
 
-const testUser = {
-  id: "1",
-  email: "me@chriswebdev.com",
-  password: "password123",
-};
-
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }).trim(),
   password: z
@@ -28,36 +24,76 @@ const loginSchema = z.object({
 });
 
 export async function login(prevState: LoginForm, formData: FormData) {
-  const result = loginSchema.safeParse(Object.fromEntries(formData));
+  // Will store our redirect path if login is successful
+  let redirectPath: string | null = null;
 
-  if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
-    };
-  }
+  try {
+    const result = loginSchema.safeParse(Object.fromEntries(formData));
 
-  const { email, password } = result.data;
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
 
-  if (email !== testUser.email || password !== testUser.password) {
+    const { email, password } = result.data;
+
+    const userResult = await pool.query(
+      "SELECT user_id, email, password_hash, name FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (userResult.rowCount === 0) {
+      return {
+        errors: {
+          email: ["Invalid email or password"],
+        },
+      };
+    }
+
+    const user = userResult.rows[0];
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!isValidPassword) {
+      return {
+        errors: {
+          password: ["Invalid email or password"],
+        },
+      };
+    }
+
+    await createSession(user.user_id.toString());
+
+    redirectPath = "/";
+  } catch (error) {
+    console.error("Login error:", error);
     return {
       errors: {
-        /* 
-          Either the emai or password is incorrect
-
-          Not providing the user which field was incorrect
-          to provde more security
-        */
-        email: ["Invalid email or password"],
+        email: ["An error occurred during login"],
       },
     };
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
   }
 
-  await createSession(testUser.id);
-
-  redirect("/");
+  // This return is needed for TypeScript, though it will never be reached
+  // if redirect is called in the finally block
+  return { success: true };
 }
 
 export async function logout() {
-  await deleteSession();
-  redirect("/login");
+  let redirectPath: string | null = null;
+
+  try {
+    await deleteSession();
+    redirectPath = "/login";
+  } catch (error) {
+    console.error("Logout error:", error);
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
+    }
+  }
 }

@@ -26,5 +26,9 @@ body {
 }
 
 input {
-  @apply rounded-md border-2 border-gray-700 bg-gray-700 px-2 py-1 text-white shadow-lg outline-none focus:border-amber-500;
+  @apply rounded-md border-2 border-gray-700 bg-gray-700 px-2 py-1 text-white shadow-lg outline-none focus:border-neutral-400;
+}
+
+.page-title {
+  @apply text-neutral-300 text-2xl font-semibold;
 }

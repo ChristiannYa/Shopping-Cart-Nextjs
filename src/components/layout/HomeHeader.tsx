@@ -8,8 +8,6 @@ const HomeHeader = () => {
   const { handleCartTabStatus } = useCartTab();
   const cartItemslength = useAppSelector(selectCartItemsLength);
 
-  // console.log("HomeHeader component rendered");
-
   return (
     <header
       className="px-4 my-4 mx-auto flex justify-between items-center"

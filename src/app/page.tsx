@@ -6,7 +6,6 @@ import { selectCartTabStatus } from "@/lib/features/cart/cartSlice";
 import HomeHeader from "@/components/layout/HomeHeader";
 import ProductList from "@/components/products/ProductList";
 import Cart from "@/components/cart/Cart";
-import { logout } from "./login/actions";
 
 export default function Home() {
   const statusTab = useAppSelector(selectCartTabStatus);
@@ -23,14 +22,6 @@ export default function Home() {
         <HomeHeader />
         <hr className="text-white/20 mb-8" />
         <ProductList />
-        <div className="mt-8 flex flex-col justify-center items-center">
-          <button
-            onClick={() => logout()}
-            className="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white text-sm rounded-xs px-1.5 py-1"
-          >
-            Log out
-          </button>
-        </div>
       </div>
       <Cart />
     </>

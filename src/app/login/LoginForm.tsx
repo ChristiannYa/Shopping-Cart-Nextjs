@@ -8,7 +8,10 @@ export function LoginForm() {
   const [state, loginAction] = useActionState(login, undefined);
 
   return (
-    <form action={loginAction} className="flex max-w-[300px] flex-col gap-2">
+    <form
+      action={loginAction}
+      className="flex min-w-[260px] max-w-full flex-col gap-3"
+    >
       <div className="flex flex-col gap-2">
         <input id="email" name="email" placeholder="Email" />
       </div>
@@ -41,7 +44,7 @@ function SubmitButton() {
     <button
       disabled={pending}
       type="submit"
-      className="bg-blue-500 text-white p-2 rounded-sm"
+      className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white p-2 rounded-sm"
     >
       Login
     </button>
