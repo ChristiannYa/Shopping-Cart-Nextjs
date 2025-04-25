@@ -1,8 +1,12 @@
 import Link from "next/link";
 
-const HomeButton = () => {
+interface HomeButtonProps {
+  className?: string;
+}
+
+const HomeButton = ({ className = "" }: HomeButtonProps) => {
   return (
-    <Link href="/" className="empty-bg-btn">
+    <Link href="/" className={`empty-bg-btn ${className}`}>
       Home
     </Link>
   );

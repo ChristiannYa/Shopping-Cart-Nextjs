@@ -17,7 +17,7 @@ const Cart = () => {
 
   return (
     <div
-      className={`bg-gray-700 transform transition-transform duration-500 w-80 md:w-96 h-full p-2 grid grid-rows-[60px_1fr_60px] fixed top-0 right-0 ${
+      className={`bg-gray-600 transform transition-transform duration-500 w-80 md:w-96 h-full p-2 grid grid-rows-[60px_1fr_50px] fixed top-0 right-0 ${
         statusTab === false ? "translate-x-full" : ""
       }`}
     >
@@ -51,11 +51,11 @@ const Cart = () => {
       <div className="w-full flex gap-x-2">
         <button
           onClick={handleCartTabStatus}
-          className="bg-neutral-900 hover:bg-black hover:cursor-pointer w-full py-2"
+          className="bg-neutral-900 hover:bg-black hover:cursor-pointer w-full py-1"
         >
           Close
         </button>
-        <button className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer w-full py-2">
+        <button className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer w-full py-1">
           Checkout
         </button>
       </div>

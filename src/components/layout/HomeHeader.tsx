@@ -6,7 +6,7 @@ import { useUser } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-function HomeHeader() {
+export default function HomeHeader() {
   const router = useRouter();
   const { user, loading } = useUser();
   const { handleCartTabStatus } = useCartTab();
@@ -61,5 +61,3 @@ function HomeHeader() {
     </header>
   );
 }
-
-export default HomeHeader;

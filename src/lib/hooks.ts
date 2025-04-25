@@ -54,6 +54,7 @@ export const useProducts = () => {
 export function useUser() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -61,8 +62,13 @@ export function useUser() {
         const response = await fetch("/api/user");
         const data = await response.json();
         setUserData(data);
-      } catch (error) {
-        console.error("Error fetching user:", error);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An error occurred when fetching user data"
+        );
       } finally {
         setLoading(false);
       }
@@ -71,5 +77,5 @@ export function useUser() {
     fetchUser();
   }, []);
 
-  return { user: userData, loading };
+  return { user: userData, loading, error };
 }
