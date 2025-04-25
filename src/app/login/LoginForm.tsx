@@ -10,7 +10,7 @@ export function LoginForm() {
   return (
     <form
       action={loginAction}
-      className="flex min-w-[260px] max-w-full flex-col gap-3"
+      className="flex flex-col min-w-[280px] max-w-full gap-3"
     >
       <div className="flex flex-col gap-2">
         <input id="email" name="email" placeholder="Email" />
@@ -41,12 +41,8 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button
-      disabled={pending}
-      type="submit"
-      className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white p-2 rounded-sm"
-    >
-      Login
+    <button disabled={pending} type="submit" className="submit-btn">
+      Log in
     </button>
   );
 }

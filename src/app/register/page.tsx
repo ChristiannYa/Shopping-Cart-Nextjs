@@ -1,5 +1,17 @@
-const page = () => {
-  return <div>register page</div>;
-};
+import Link from "next/link";
+import { RegisterForm } from "./RegisterForm";
 
-export default page;
+export default function Register() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="page-title mb-2">Register</h1>
+      <RegisterForm />
+      <div className="text-center text-white mt-2">
+        Already have an account?
+        <Link href="/login" className="empty-bg-btn">
+          Log in
+        </Link>
+      </div>
+    </div>
+  );
+}

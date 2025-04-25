@@ -13,7 +13,7 @@ const HomeHeader = () => {
       className="px-4 my-4 mx-auto flex justify-between items-center"
       style={{ width: "min(90%, 1000px)" }}
     >
-      <h1 className="text-2xl text-center my-4">Home Page</h1>
+      <h1 className="page-title my-4">Home Page</h1>
       <div className="flex items-center gap-x-2">
         <button
           onClick={handleCartTabStatus}

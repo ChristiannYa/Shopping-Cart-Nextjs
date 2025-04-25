@@ -32,3 +32,11 @@ input {
 .page-title {
   @apply text-neutral-300 text-2xl font-semibold;
 }
+
+.empty-bg-btn {
+  @apply hover:cursor-pointer hover:text-blue-500 text-white px-1.5 py-1;
+}
+
+.submit-btn {
+  @apply bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white p-1 rounded-sm;
+}

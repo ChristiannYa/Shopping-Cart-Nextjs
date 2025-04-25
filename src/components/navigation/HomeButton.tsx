@@ -2,10 +2,7 @@ import Link from "next/link";
 
 const HomeButton = () => {
   return (
-    <Link
-      href="/"
-      className="hover:cursor-pointer hover:text-blue-500 text-white text-sm rounded-xs px-1.5 py-1"
-    >
+    <Link href="/" className="empty-bg-btn">
       Home
     </Link>
   );
