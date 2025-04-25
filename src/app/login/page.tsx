@@ -13,9 +13,7 @@ export default function Login() {
           Register
         </Link>
       </div>
-      <div className="flex justify-center mt-1">
-        <HomeButton />
-      </div>
+      <HomeButton />
     </div>
   );
 }

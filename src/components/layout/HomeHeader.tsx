@@ -2,18 +2,45 @@
 
 import { useAppSelector, useCartTab } from "@/lib/hooks";
 import { selectCartItemsLength } from "@/lib/features/cart/cartSlice";
+import { useUser } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-const HomeHeader = () => {
+function HomeHeader() {
+  const router = useRouter();
+  const { user, loading } = useUser();
   const { handleCartTabStatus } = useCartTab();
   const cartItemslength = useAppSelector(selectCartItemsLength);
+
+  const handleUserClick = () => {
+    if (user?.isLoggedIn) {
+      router.push("/profile");
+    } else {
+      router.push("/login");
+    }
+  };
 
   return (
     <header
       className="px-4 my-4 mx-auto flex justify-between items-center"
       style={{ width: "min(90%, 1000px)" }}
     >
-      <h1 className="page-title my-4">Home Page</h1>
+      <div className="flex flex-col justify-center items-start my-4">
+        <h1 className="page-title">Home Page</h1>
+        <button
+          onClick={handleUserClick}
+          className="empty-bg-btn -ml-1.5 capitalize"
+        >
+          {loading ? (
+            <span className="block w-5 h-5 border-2 border-gray-500 border-t-white rounded-full animate-spin"></span>
+          ) : user?.isLoggedIn ? (
+            user.user?.name
+          ) : (
+            "Guest"
+          )}
+        </button>
+      </div>
+
       <div className="flex items-center gap-x-2">
         <button
           onClick={handleCartTabStatus}
@@ -33,6 +60,6 @@ const HomeHeader = () => {
       </div>
     </header>
   );
-};
+}
 
 export default HomeHeader;

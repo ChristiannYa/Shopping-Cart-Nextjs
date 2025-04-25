@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { RegisterForm } from "./RegisterForm";
+import HomeButton from "@/components/navigation/HomeButton";
 
 export default function Register() {
   return (
@@ -12,6 +13,7 @@ export default function Register() {
           Log in
         </Link>
       </div>
+      <HomeButton />
     </div>
   );
 }

@@ -5,6 +5,11 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_TOKEN;
 const encodedKey = new TextEncoder().encode(secretKey);
 
+type SessionPayload = {
+  userId: string;
+  expiresAt: Date;
+};
+
 export async function createSession(userId: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
   const session = await encrypt({ userId, expiresAt });
@@ -21,11 +26,6 @@ export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
 }
-
-type SessionPayload = {
-  userId: string;
-  expiresAt: Date;
-};
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)

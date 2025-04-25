@@ -13,12 +13,12 @@ export interface CartItem {
   price: number;
 }
 
-export interface DbUser {
-  user_id: number;
-  email: string;
-  email_verified: Date | null;
-  password_hash: string;
-  name: string | null;
-  created_at: Date;
-  updated_at: Date;
+export interface UserData {
+  isLoggedIn: boolean;
+  user?: {
+    id: number;
+    name: string;
+    email: string;
+    createdAt: string;
+  };
 }
