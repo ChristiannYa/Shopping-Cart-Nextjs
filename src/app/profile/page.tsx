@@ -3,7 +3,7 @@
 import LogouButton from "@/components/profile/LogouButton";
 import HomeButton from "@/components/navigation/HomeButton";
 import { useUser } from "@/lib/hooks";
-import { formatDate, formatPossessive } from "@/lib/utils";
+import { formatDate, formatPossessive } from "@/app/lib/utils";
 
 export default function Profile() {
   const { user, loading, error } = useUser();
@@ -30,34 +30,36 @@ export default function Profile() {
     );
   }
 
-  const { name, email, createdAt } = user.user || {};
+  const { firstName, lastName, email, createdAt } = user.user || {};
 
   return (
     <div className="p-4 md:p-8">
       <div className="mb-4">
         <h1 className="page-title capitalize">
-          {formatPossessive(name || "User")} Profile
+          {formatPossessive(firstName!)} Profile
         </h1>
         <HomeButton className="-ml-1.5" />
       </div>
-
-      <div className="w-fit mb-4 space-y-2">
+      <div className="w-fit mb-4 space-y-1">
         <div className="flex items-center gap-x-1 flex-wrap">
-          <p className="text-blue-400">Name:</p>
-          <p>{name || "Not provided"}</p>
+          <p>First Name:</p>
+          <p className="text-white/60">{firstName || "Not provided"}</p>
         </div>
         <div className="flex items-center gap-x-1 flex-wrap">
-          <p className="text-blue-400">Email:</p>
-          <p>{email || "Not provided"}</p>
+          <p>Last Name:</p>
+          <p className="text-white/60">{lastName || "Not provided"}</p>
         </div>
         <div className="flex items-center gap-x-1 flex-wrap">
-          <p className="text-blue-400">Date created:</p>
-          <p>
+          <p>Email:</p>
+          <p className="text-white/60">{email || "Not provided"}</p>
+        </div>
+        <div className="flex items-center gap-x-1 flex-wrap">
+          <p>Date created:</p>
+          <p className="text-white/60">
             {createdAt ? formatDate(createdAt.toLocaleString()) : "Unknown"}
           </p>
         </div>
       </div>
-
       <LogouButton />
     </div>
   );

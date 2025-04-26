@@ -8,24 +8,39 @@ export function RegisterForm() {
   const [state, formAction] = useActionState(register, undefined);
 
   return (
-    <form
-      action={formAction}
-      className="flex flex-col min-w-[280px] max-w-full gap-3"
-    >
+    <form action={formAction} className="form">
       <div className="flex flex-col gap-0.5">
-        <label htmlFor="name" className="text-white mb-1">
-          Name
+        <label htmlFor="firstName" className="text-white mb-1">
+          First Name
         </label>
         <input
-          id="name"
-          name="name"
+          id="firstName"
+          name="firstName"
           type="text"
-          placeholder="Your Name"
-          defaultValue={state?.values?.name || ""}
+          placeholder="Your First Name"
+          defaultValue={state?.values?.firstName || ""}
         />
-        {state?.errors?.name && (
+        {state?.errors?.firstName && (
           <div className="text-red-500 text-sm mt-1">
-            {state.errors.name[0]}
+            {state.errors.firstName[0]}
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-0.5">
+        <label htmlFor="lastName" className="text-white mb-1">
+          Last Name
+        </label>
+        <input
+          id="lastName"
+          name="lastName"
+          type="text"
+          placeholder="Your Last Name"
+          defaultValue={state?.values?.lastName || ""}
+        />
+        {state?.errors?.lastName && (
+          <div className="text-red-500 text-sm mt-1">
+            {state.errors.lastName[0]}
           </div>
         )}
       </div>

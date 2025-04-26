@@ -5,6 +5,7 @@ import {
   selectCartItems,
   clearCart,
   selectCartTabStatus,
+  toggleOrderStatus,
 } from "@/lib/features/cart/cartSlice";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
@@ -55,8 +56,17 @@ const Cart = () => {
         >
           Close
         </button>
-        <button className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer w-full py-1">
-          Checkout
+        <button
+          onClick={() => {
+            if (cartItems.length < 1) {
+              return;
+            }
+            dispatch(toggleOrderStatus());
+            handleCartTabStatus();
+          }}
+          className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer w-full py-1"
+        >
+          Order
         </button>
       </div>
     </div>

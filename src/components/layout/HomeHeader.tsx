@@ -20,6 +20,11 @@ export default function HomeHeader() {
     }
   };
 
+  // Combine first and last name for display
+  const fullName = [user?.user?.firstName, user?.user?.lastName]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <header
       className="px-4 my-4 mx-auto flex justify-between items-center"
@@ -29,12 +34,12 @@ export default function HomeHeader() {
         <h1 className="page-title">Home Page</h1>
         <button
           onClick={handleUserClick}
-          className="empty-bg-btn -ml-1.5 capitalize"
+          className="empty-bg-btn capitalize -ml-1.5"
         >
           {loading ? (
             <span className="block w-5 h-5 border-2 border-gray-500 border-t-white rounded-full animate-spin"></span>
           ) : user?.isLoggedIn ? (
-            user.user?.name
+            fullName
           ) : (
             "Guest"
           )}

@@ -2,47 +2,77 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { decrypt } from "@/app/lib/session";
 import pool from "@/lib/db";
+import { getToken } from "next-auth/jwt";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Check for custom session
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("session")?.value;
 
-    if (!sessionCookie) {
-      return NextResponse.json({ isLoggedIn: false });
+    // First try the custom session
+    if (sessionCookie) {
+      try {
+        const session = await decrypt(sessionCookie);
+        if (session?.userId) {
+          const result = await pool.query(
+            "SELECT user_id, first_name, last_name, email, created_at FROM users WHERE user_id = $1",
+            [session.userId]
+          );
+
+          if (result.rows.length > 0) {
+            return NextResponse.json({
+              isLoggedIn: true,
+              user: {
+                id: result.rows[0].user_id,
+                firstName: result.rows[0].first_name,
+                lastName: result.rows[0].last_name,
+                email: result.rows[0].email,
+                createdAt: result.rows[0].created_at,
+              },
+              authType: "custom",
+            });
+          }
+        }
+      } catch (error) {
+        // Just log the error and continue to try NextAuth
+        console.error("Error with custom session:", error);
+      }
     }
 
-    const session = await decrypt(sessionCookie);
+    // If custom session failed, try NextAuth
+    try {
+      const token = await getToken({
+        req: request,
+        secret: process.env.SESSION_TOKEN,
+      });
 
-    /* 
-      Verify that we have a valid session with a user ID
+      if (token?.sub) {
+        const result = await pool.query(
+          "SELECT user_id, first_name, last_name, email, created_at FROM users WHERE user_id = $1",
+          [token.sub]
+        );
 
-      Even if a cookie exists, it could be invalid, expired,
-      or missing data
-     */
-    if (!session?.userId) {
-      return NextResponse.json({ isLoggedIn: false });
+        if (result.rows.length > 0) {
+          return NextResponse.json({
+            isLoggedIn: true,
+            user: {
+              id: result.rows[0].user_id,
+              firstName: result.rows[0].first_name,
+              lastName: result.rows[0].last_name,
+              email: result.rows[0].email,
+              createdAt: result.rows[0].created_at,
+            },
+            authType: "nextauth",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error with NextAuth session:", error);
     }
 
-    const result = await pool.query(
-      "SELECT user_id, name, email, created_at FROM users WHERE user_id = $1",
-      [session.userId]
-    );
-
-    if (result.rows.length === 0) {
-      return NextResponse.json({ isLoggedIn: false });
-    }
-
-    // Return user data without sensitive information
-    return NextResponse.json({
-      isLoggedIn: true,
-      user: {
-        id: result.rows[0].user_id,
-        name: result.rows[0].name,
-        email: result.rows[0].email,
-        createdAt: result.rows[0].created_at,
-      },
-    });
+    // If we get here, neither auth method worked
+    return NextResponse.json({ isLoggedIn: false });
   } catch (error) {
     console.error("Error getting user data:", error);
     return NextResponse.json(

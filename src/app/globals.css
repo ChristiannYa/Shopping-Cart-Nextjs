@@ -38,5 +38,9 @@ input {
 }
 
 .submit-btn {
-  @apply bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white p-1 rounded-sm;
+  @apply bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white py-1 px-2 rounded-sm;
+}
+
+.form {
+  @apply w-[280px] md:w-[300px] gap-3 flex flex-col;
 }

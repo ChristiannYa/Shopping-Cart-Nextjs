@@ -17,8 +17,19 @@ export interface UserData {
   isLoggedIn: boolean;
   user?: {
     id: number;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     createdAt: string | Date;
   };
+}
+
+export interface NextAuthData {
+  user?: {
+    id?: string;
+    name?: string;
+    email?: string;
+    image?: string;
+  };
+  expires?: string;
 }

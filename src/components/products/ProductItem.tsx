@@ -28,7 +28,10 @@ const ProductItem = ({ product }: ProductItemProps) => {
     <div className="bg-white/5 rounded-lg w-[170px] h-[160px] grid grid-rows-[2fr_1fr]">
       <div className="flex flex-col items-center justify-center">
         <h2>{product.name}</h2>
-        <p>🏷️ ${product.price.toFixed(2)}</p>
+        <p>
+          <span className="text-xs md:text-base">🏷️</span> $
+          {product.price.toFixed(2)}
+        </p>
       </div>
       <div className="flex justify-center items-start">
         {!product.in_stock && (

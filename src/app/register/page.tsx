@@ -4,7 +4,7 @@ import HomeButton from "@/components/navigation/HomeButton";
 
 export default function Register() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-svh">
       <h1 className="page-title mb-2">Register</h1>
       <RegisterForm />
       <div className="text-center text-white mt-2">
